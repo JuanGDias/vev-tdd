@@ -4,7 +4,7 @@ public class GeradorNotaFiscal {
         NotaFiscal notaFiscal = new NotaFiscal();
         notaFiscal.setNomeCliente(fatura.getNomeCliente());
         notaFiscal.setValorNotaFiscal(fatura.getValorFatura());
-        notaFiscal.setValorImposto(null);
+        notaFiscal.setValorImposto(fatura.getValorFatura());
         return notaFiscal;
     }
 }

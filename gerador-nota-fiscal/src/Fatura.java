@@ -10,4 +10,16 @@ public class Fatura {
         this.tipoServico = tipoServico;
         this.valorFatura = valorFatura;
     }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public String getTipoServico() {
+        return tipoServico;
+    }
+
+    public double getValorFatura() {
+        return valorFatura;
+    }
 }
