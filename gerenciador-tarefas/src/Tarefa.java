@@ -1,11 +1,21 @@
 import java.util.Objects;
+import java.util.UUID;
 
 public class Tarefa {
 
+    private String id;
     private String titulo;
     private String descricao;
     private String dataVencimento;
     private String prioridade;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
