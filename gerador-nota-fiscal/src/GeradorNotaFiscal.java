@@ -12,6 +12,8 @@ public class GeradorNotaFiscal {
     public double calculaImposto(Double valorFatura, String tipoServico) {
         if (tipoServico.equals("CONSULTORIA")) {
             return valorFatura * 0.25;
+        }else if (tipoServico.equals("TREINAMENTO")) {
+            return valorFatura * 0.15;
         }
         return 0;
     }
