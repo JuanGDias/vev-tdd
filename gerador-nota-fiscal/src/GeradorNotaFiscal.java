@@ -15,6 +15,6 @@ public class GeradorNotaFiscal {
         }else if (tipoServico.equals("TREINAMENTO")) {
             return valorFatura * 0.15;
         }
-        return 0;
+        return valorFatura * 0.06;
     }
 }
