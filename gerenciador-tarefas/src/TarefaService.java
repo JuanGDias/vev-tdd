@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TarefaService {
 
@@ -42,5 +40,26 @@ public class TarefaService {
 
     public void excluirTarefa(Tarefa tarefa) {
         tarefas.remove(tarefa.getId());
+    }
+
+    private List<Tarefa> ordenarTarefas(List<Tarefa> tarefas) {
+        tarefas.sort((tarefa1, tarefa2) -> {
+            if (tarefa1.getPrioridade().equals(tarefa2.getPrioridade())) {
+                return tarefa1.getDataVencimento().compareTo(tarefa2.getDataVencimento());
+            }
+
+            if (tarefa1.getPrioridade().equals("ALTA")) {
+                return -1;
+            } else if (tarefa1.getPrioridade().equals("MEDIA") && !tarefa2.getPrioridade().equals("ALTA")) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        return tarefas;
+    }
+
+    public List<Tarefa> listarTarefasOrdenadas() {
+        return ordenarTarefas(new ArrayList<>(tarefas.values()));
     }
 }
