@@ -6,8 +6,8 @@ public class TarefaService {
 
     private Map<String, Tarefa> tarefas;
 
-    public TarefaService(){
-        this.tarefas = new HashMap<>();
+    public TarefaService() {
+        tarefas = new HashMap<>();
     }
 
     public Tarefa criarTarefa(String titulo, String descricao, String dataVencimento, String prioridade) {
@@ -27,5 +27,12 @@ public class TarefaService {
 
     public Map<String, Tarefa> getTarefas(){
         return tarefas;
+    }
+
+    public void atualizarTarefa(Tarefa tarefa, String tituloNovo, String descricaoNova, String dataVencimentoNova, String prioridadeNova) {
+        tarefa.setTitulo(tituloNovo);
+        tarefa.setDescricao(descricaoNova);
+        tarefa.setDataVencimento(dataVencimentoNova);
+        tarefa.setPrioridade(prioridadeNova);
     }
 }
