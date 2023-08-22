@@ -7,13 +7,13 @@ public class GeradorDeNotaFiscalTest {
     GeradorNotaFiscal geradorNotaFiscal;
 
     @BeforeEach
-    void testCreateGerador(){
+    void testCreateGerador() {
         geradorNotaFiscal = new GeradorNotaFiscal();
 
     }
 
     @Test
-    void testGerarNotaFiscal(){
+    void testGerarNotaFiscal() {
         Fatura fatura = new Fatura("Cliente", "Endereço", "EXEMPLO", 1000.0);
         NotaFiscal notaFiscal = geradorNotaFiscal.gerarNotaFiscal(fatura);
 
@@ -22,10 +22,18 @@ public class GeradorDeNotaFiscalTest {
     }
 
     @Test
-    void testGerarNotaFiscalTipoDeServicoConsultoria(){
+    void testGerarNotaFiscalTipoDeServicoConsultoria() {
         Fatura fatura = new Fatura("Cliente A", "Endereço A", "CONSULTORIA", 1000.0);
         NotaFiscal notaFiscal = geradorNotaFiscal.gerarNotaFiscal(fatura);
 
         assertEquals(fatura.getValorFatura() * 0.25, notaFiscal.getValorImposto());
+    }
+
+    @Test
+    void testGerarNotaFiscalTipoDeServicoTreinamento() {
+        Fatura fatura = new Fatura("Cliente B", "Endereço B", "TREINAMENTO", 1000.0);
+        NotaFiscal notaFiscal = geradorNotaFiscal.gerarNotaFiscal(fatura);
+
+        assertEquals(fatura.getValorFatura() * 0.15, notaFiscal.getValorImposto());
     }
 }
