@@ -62,4 +62,8 @@ public class TarefaService {
     public List<Tarefa> listarTarefasOrdenadas() {
         return ordenarTarefas(new ArrayList<>(tarefas.values()));
     }
+
+    public void alterarPrioridade(Tarefa tarefa, String prioridadeNova) {
+        tarefa.setPrioridade(prioridadeNova);
+    }
 }
