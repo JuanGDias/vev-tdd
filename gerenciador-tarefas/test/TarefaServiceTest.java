@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -49,13 +50,41 @@ public class TarefaServiceTest {
     }
 
     @Test
-    void testExcluirTarefaLista(){
-        Tarefa tarefa = tarefaService.criarTarefa("Exercício 1", "Quiz 1", "21-08-2023", "MEDIA");
-        Map<String, Tarefa> tarefas = tarefaService.getTarefas();
-        assertEquals(1, tarefas.size());
+    void testlistarTarefasOrdenadas(){
+        Tarefa tarefa1 = tarefaService.criarTarefa("Quiz 1", "Quiz 1", "29-08-2023", "MEDIA");
+        Tarefa tarefa2 = tarefaService.criarTarefa("Quiz 2", "Quiz 2", "30-08-2023", "ALTA");
+        Tarefa tarefa3 = tarefaService.criarTarefa("Quiz 3", "Quiz 3", "31-08-2023", "BAIXA");
 
-        tarefaService.excluirTarefa(tarefa);
-        tarefas = tarefaService.getTarefas();
-        assertEquals(0, tarefas.size());
+        List<Tarefa> tarefasOrdenadas = tarefaService.listarTarefasOrdenadas();
+
+        assertEquals(tarefa2.getTitulo(), tarefasOrdenadas.get(0).getTitulo());
+        assertEquals(tarefa1.getTitulo(), tarefasOrdenadas.get(1).getTitulo());
+        assertEquals(tarefa3.getTitulo(), tarefasOrdenadas.get(2).getTitulo());
+    }
+
+    @Test
+    void testlistarTarefasOrdenadasPorDataVencimento(){
+        Tarefa tarefa1 = tarefaService.criarTarefa("Quiz 1", "Quiz 1", "29-08-2023", "ALTA");
+        Tarefa tarefa2 = tarefaService.criarTarefa("Quiz 2", "Quiz 2", "30-08-2023", "ALTA");
+        Tarefa tarefa3 = tarefaService.criarTarefa("Quiz 3", "Quiz 3", "31-08-2023", "ALTA");
+
+        List<Tarefa> tarefasOrdenadas = tarefaService.listarTarefasOrdenadas();
+
+        assertEquals(tarefa1.getTitulo(), tarefasOrdenadas.get(0).getTitulo());
+        assertEquals(tarefa2.getTitulo(), tarefasOrdenadas.get(1).getTitulo());
+        assertEquals(tarefa3.getTitulo(), tarefasOrdenadas.get(2).getTitulo());
+    }
+
+    @Test
+    void testlistarTarefasOrdenadasPorPrioridade(){
+        Tarefa tarefa1 = tarefaService.criarTarefa("Quiz 1", "Quiz 1", "29-08-2023", "BAIXA");
+        Tarefa tarefa2 = tarefaService.criarTarefa("Quiz 2", "Quiz 2", "29-08-2023", "ALTA");
+        Tarefa tarefa3 = tarefaService.criarTarefa("Quiz 3", "Quiz 3", "29-08-2023", "MEDIA");
+
+        List<Tarefa> tarefasOrdenadas = tarefaService.listarTarefasOrdenadas();
+
+        assertEquals(tarefa2.getTitulo(), tarefasOrdenadas.get(0).getTitulo());
+        assertEquals(tarefa3.getTitulo(), tarefasOrdenadas.get(1).getTitulo());
+        assertEquals(tarefa1.getTitulo(), tarefasOrdenadas.get(2).getTitulo());
     }
 }
