@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TarefaServiceTest {
 
@@ -38,5 +39,23 @@ public class TarefaServiceTest {
         assertEquals(tarefa.getDescricao(), "Quiz 1");
         assertEquals(tarefa.getDataVencimento(), "21-08-2023");
         assertEquals(tarefa.getPrioridade(), "MEDIA");
+    }
+
+    @Test
+    void testExcluirTarefa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Exercício", "Quiz 2", "21-08-2023", "BAIXA");
+        tarefaService.excluirTarefa(tarefa);
+        assertNull(tarefaService.getTarefa(tarefa.getId()));
+    }
+
+    @Test
+    void testExcluirTarefaLista(){
+        Tarefa tarefa = tarefaService.criarTarefa("Exercício 1", "Quiz 1", "21-08-2023", "MEDIA");
+        Map<String, Tarefa> tarefas = tarefaService.getTarefas();
+        assertEquals(1, tarefas.size());
+
+        tarefaService.excluirTarefa(tarefa);
+        tarefas = tarefaService.getTarefas();
+        assertEquals(0, tarefas.size());
     }
 }
