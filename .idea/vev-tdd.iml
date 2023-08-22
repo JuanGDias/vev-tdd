@@ -5,6 +5,8 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/gerador-nota-fiscal/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gerador-nota-fiscal/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/gerenciador-tarefas/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gerenciador-tarefas/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
