@@ -50,6 +50,17 @@ public class TarefaServiceTest {
     }
 
     @Test
+    void testExcluirTarefaLista(){
+        Tarefa tarefa = tarefaService.criarTarefa("Exercício 1", "Quiz 1", "21-08-2023", "MEDIA");
+        Map<String, Tarefa> tarefas = tarefaService.getTarefas();
+        assertEquals(1, tarefas.size());
+
+        tarefaService.excluirTarefa(tarefa);
+        tarefas = tarefaService.getTarefas();
+        assertEquals(0, tarefas.size());
+    }
+
+    @Test
     void testlistarTarefasOrdenadas(){
         Tarefa tarefa1 = tarefaService.criarTarefa("Quiz 1", "Quiz 1", "29-08-2023", "MEDIA");
         Tarefa tarefa2 = tarefaService.criarTarefa("Quiz 2", "Quiz 2", "30-08-2023", "ALTA");
@@ -86,5 +97,29 @@ public class TarefaServiceTest {
         assertEquals(tarefa2.getTitulo(), tarefasOrdenadas.get(0).getTitulo());
         assertEquals(tarefa3.getTitulo(), tarefasOrdenadas.get(1).getTitulo());
         assertEquals(tarefa1.getTitulo(), tarefasOrdenadas.get(2).getTitulo());
+    }
+
+    @Test
+    void testAlterarPrioridadeParaAlta(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "BAIXA");
+        tarefaService.alterarPrioridade(tarefa, "ALTA");
+
+        assertEquals(tarefa.getPrioridade(), "ALTA");
+    }
+
+    @Test
+    void testAlterarPrioridadeParaBaixa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "MEDIA");
+        tarefaService.alterarPrioridade(tarefa, "BAIXA");
+
+        assertEquals(tarefa.getPrioridade(), "BAIXA");
+    }
+
+    @Test
+    void testAlterarPrioridadeParaMedia(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "ALTA");
+        tarefaService.alterarPrioridade(tarefa, "MEDIA");
+
+        assertEquals(tarefa.getPrioridade(), "MEDIA");
     }
 }
