@@ -1,11 +1,11 @@
 public class GeradorNotaFiscal {
     private Smtp smtp;
     private SAP sap;
-
+    private NotaFiscalDao notaFiscalDao;
     public GeradorNotaFiscal() {
         this.smtp = new Smtp();
         this.sap = new SAP();
-
+        this.notaFiscalDao = new NotaFiscalDao();
     }
     public NotaFiscal gerarNotaFiscal(Fatura fatura) {
         NotaFiscal notaFiscal = new NotaFiscal();
@@ -16,6 +16,8 @@ public class GeradorNotaFiscal {
         this.smtp.envia(notaFiscal);
 
         this.sap.envia(notaFiscal);
+
+        this.notaFiscalDao.salva(notaFiscal);
 
         return notaFiscal;
     }
