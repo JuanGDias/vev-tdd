@@ -3,9 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TarefaServiceTest {
 
@@ -15,13 +15,53 @@ public class TarefaServiceTest {
         tarefaService = new TarefaService();
     }
 
+    // Testes usando a técnica de Partições de Equivalência
     @Test
-    void testCriarTarefa(){
-        Tarefa tarefa = tarefaService.criarTarefa("Atividade VeV", "Exercicio 2", "21-08-2023", "ALTA");
-        assertEquals(tarefa.getTitulo(), "Atividade VeV");
-        assertEquals(tarefa.getDescricao(), "Exercicio 2");
-        assertEquals(tarefa.getDataVencimento(), "21-08-2023");
+    void testCriarTarefaValida(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "ALTA");
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "Descrição");
+        assertEquals(tarefa.getDataVencimento(), "20-09-2023");
         assertEquals(tarefa.getPrioridade(), "ALTA");
+    }
+    @Test
+    void testCriarTarefaComTituloEmBranco(){
+        assertThrows(IllegalAccessError.class, () -> {
+            Tarefa tarefa = tarefaService.criarTarefa("", "Descrição", "20-09-2023", "ALTA");
+        });
+    }
+    @Test
+    void testCriarTarefaComDescricaoEmBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "", "20-09-2023", "ALTA");
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "");
+        assertEquals(tarefa.getDataVencimento(), "20-09-2023");
+        assertEquals(tarefa.getPrioridade(), "ALTA");
+    }
+    @Test
+    void testCriarTarefaComDataDeVencimentoEmBranco(){
+        assertThrows(IllegalAccessError.class, () -> {
+            Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "", "ALTA");
+        });
+    }
+    @Test
+    void testCriarTarefaComPrioridadeEmBranco(){
+        assertThrows(IllegalAccessError.class, () -> {
+            Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "");
+        });
+    }
+    @Test
+    void testCriarTarefaComDataDeVencimentoPassado(){
+        assertThrows(IllegalAccessError.class, () -> {
+            Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "01-01-1999", "ALTA");
+        });
+    }
+
+    @Test
+    void testCriarTarefaComPrioridadeInvalida(){
+        assertThrows(IllegalAccessError.class, () -> {
+            Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "INVÁLIDA");
+        });
     }
 
     @Test
@@ -33,20 +73,115 @@ public class TarefaServiceTest {
 
     @Test
     void testAtualizarTarefa(){
-        Tarefa tarefa = tarefaService.criarTarefa("Atividade 1", "Quiz 1", "21-08-2023", "MEDIA");
-        tarefaService.atualizarTarefa(tarefa, "Atividade 2", "Quiz 1", "21-08-2023", "MEDIA");
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "ALTA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa Atualizada", "Descrição Atualizada", "26-10-2023", "MEDIA");
 
-        assertEquals(tarefa.getTitulo(), "Atividade 2");
-        assertEquals(tarefa.getDescricao(), "Quiz 1");
-        assertEquals(tarefa.getDataVencimento(), "21-08-2023");
+        assertEquals(tarefa.getTitulo(), "Tarefa Atualizada");
+        assertEquals(tarefa.getDescricao(), "Descrição Atualizada");
+        assertEquals(tarefa.getDataVencimento(), "26-10-2023");
+        assertEquals(tarefa.getPrioridade(), "MEDIA");
+    }
+    @Test
+    void testAtualizarTituloDeUmaTarefa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa Atualizada", "Descrição Atualizada", "26-10-2023", "MEDIA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição Atualizada", "26-10-2023", "MEDIA");
+
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "Descrição Atualizada");
+        assertEquals(tarefa.getDataVencimento(), "26-10-2023");
+        assertEquals(tarefa.getPrioridade(), "MEDIA");
+    }
+    @Test
+    void testAtualizarDescricaoDeUmaTarefa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição Atualizada", "26-10-2023", "MEDIA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição", "26-10-2023", "MEDIA");
+
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "Descrição");
+        assertEquals(tarefa.getDataVencimento(), "26-10-2023");
         assertEquals(tarefa.getPrioridade(), "MEDIA");
     }
 
     @Test
+    void testAtualizarDataDeVencimentoDeUmaTarefa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "26-10-2023", "MEDIA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição", "30-11-2023", "MEDIA");
+
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "Descrição");
+        assertEquals(tarefa.getDataVencimento(), "30-11-2023");
+        assertEquals(tarefa.getPrioridade(), "MEDIA");
+    }
+
+    @Test
+    void testAtualizarPrioridadeDeUmaTarefa(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "26-10-2023", "MEDIA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição", "30-11-2023", "BAIXA");
+
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "Descrição");
+        assertEquals(tarefa.getDataVencimento(), "30-11-2023");
+        assertEquals(tarefa.getPrioridade(), "BAIXA");
+    }
+    @Test
+    void testAtualizarTituloDeUmaTarefaParaBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "26-10-2023", "BAIXA");
+        assertThrows(IllegalAccessError.class, () -> {
+            tarefaService.atualizarTarefa(tarefa, "", "Descrição", "30-11-2023", "BAIXA");
+
+        });
+    }
+    @Test
+    void testAtualizarDescricaoDeUmaTarefaParaBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "26-10-2023", "BAIXA");
+        tarefaService.atualizarTarefa(tarefa, "Tarefa", "", "30-11-2023", "BAIXA");
+
+        assertEquals(tarefa.getTitulo(), "Tarefa");
+        assertEquals(tarefa.getDescricao(), "");
+        assertEquals(tarefa.getDataVencimento(), "30-11-2023");
+        assertEquals(tarefa.getPrioridade(), "BAIXA");
+    }
+
+    @Test
+    void testAtualizarDataDeVencimentoDeUmaTarefaParaBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "30-11-2023", "BAIXA");
+        assertThrows(IllegalAccessError.class, () -> {
+            tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição", "", "BAIXA");
+
+        });
+    }
+    @Test
+    void testAtualizarPrioridadeDeUmaTarefaParaBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "30-11-2023", "BAIXA");
+        assertThrows(IllegalAccessError.class, () -> {
+            tarefaService.atualizarTarefa(tarefa, "Tarefa", "Descrição", "30-11-2023", "");
+
+        });
+    }
+    @Test
+    void testAtualizarUmaTarefaInexistente(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "30-11-2023", "BAIXA");
+        String id = tarefa.getId();
+        tarefaService.excluirTarefa(tarefa);
+        assertThrows(NullPointerException.class, () -> {
+            tarefaService.atualizarTarefa(tarefaService.getTarefa(id), "Tarefa", "Descrição", "30-11-2023", "BAIXA");
+
+        });
+    }
+
+    @Test
     void testExcluirTarefa(){
-        Tarefa tarefa = tarefaService.criarTarefa("Exercício", "Quiz 2", "21-08-2023", "BAIXA");
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "30-11-2023", "BAIXA");
         tarefaService.excluirTarefa(tarefa);
         assertNull(tarefaService.getTarefa(tarefa.getId()));
+    }
+    @Test
+    void testExcluirUmaTarefaInexistente(){
+        Tarefa tarefa = new Tarefa("Tarefa", "Descrição", "30-11-2023", "BAIXA");
+        assertThrows(NullPointerException.class, () -> {
+            tarefaService.excluirTarefa(tarefa);
+
+        });
     }
 
     @Test
@@ -106,7 +241,13 @@ public class TarefaServiceTest {
 
         assertEquals(tarefa.getPrioridade(), "ALTA");
     }
+    @Test
+    void testAlterarPrioridadeParaMedia(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "ALTA");
+        tarefaService.alterarPrioridade(tarefa, "MEDIA");
 
+        assertEquals(tarefa.getPrioridade(), "MEDIA");
+    }
     @Test
     void testAlterarPrioridadeParaBaixa(){
         Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "MEDIA");
@@ -116,10 +257,40 @@ public class TarefaServiceTest {
     }
 
     @Test
-    void testAlterarPrioridadeParaMedia(){
-        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "ALTA");
-        tarefaService.alterarPrioridade(tarefa, "MEDIA");
+    void testAlterarPrioridadeParaTarefaInexistente(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "MEDIA");
+        tarefaService.excluirTarefa(tarefa);
+        assertThrows(NullPointerException.class, () -> {
+            tarefaService.alterarPrioridade(tarefa, "BAIXA");
 
-        assertEquals(tarefa.getPrioridade(), "MEDIA");
+        });
     }
+
+    // Testes usando a técnica de Tabela de Decisões
+    @Test
+    void testAlterarPrioridadeParaBranco(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "MEDIA");
+        assertThrows(IllegalArgumentException.class, () -> {
+            tarefaService.alterarPrioridade(tarefa, "");
+        });
+
+    }
+    @Test
+    void testAlterarPrioridadeParaInvalida(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa 1", "Tarefa 1", "21-08-2023", "MEDIA");
+        assertThrows(IllegalArgumentException.class, () -> {
+            tarefaService.alterarPrioridade(tarefa, "INVALIDA");
+        });
+
+    }
+
+   /* @Test
+    void testCriarTarefaQueJaExiste(){
+        Tarefa tarefa = tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "ALTA");
+        assertThrows(TarefaAlreadyExistsException.class, () -> {
+            tarefaService.criarTarefa("Tarefa", "Descrição", "20-09-2023", "ALTA");
+        });
+    }
+*/
+
 }

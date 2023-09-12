@@ -9,6 +9,16 @@ public class Tarefa {
     private String dataVencimento;
     private String prioridade;
 
+    public Tarefa(String titulo, String descricao, String dataVencimento, String prioridade) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.dataVencimento = dataVencimento;
+        this.prioridade = prioridade;
+    }
+
+    public Tarefa() {
+    }
+
     public String getId() {
         return id;
     }
